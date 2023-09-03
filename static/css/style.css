@@ -1,0 +1,16 @@
+h1,h2,h3,h4,p {
+    font-family: sans-serif;
+}
+
+.author img {
+    border-radius: 50%;
+    border: 2px solid hsla(0, 0%, 0%, 0.247);
+}
+
+.author-info {
+    display: flex;
+    row-gap: 8px;
+    align-items: center;
+    background-color: hsla(0, 0%, 0%, 0.3215);
+    padding: 4px 8px;
+}

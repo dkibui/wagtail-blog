@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block extra_css %}
+    <style>
+        h1,h2,h3,h4,p {
+            font-family: sans-serif;
+        }
+
+        .author img {
+            border-radius: 50%;
+            border: 1px solid hsla(0, 0%, 0%, 0.2875);
+            display: inline-block
+        }
+
+        .author-info {
+            display: flex;
+            column-gap: 8px;
+            align-items: center;
+            font-family: sans-serif;
+            margin: 0.25rem 0 2.2rem 0;
+            border-bottom: 1px solid hsla(0, 0%, 0%, 0.125);
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: normal;
+        }
+
+        .wrapper p {
+            text-align: justify;
+            word-spacing: normal;
+            hyphens: auto;
+            line-height: 1.7;
+        } 
+
+        .wrapper {
+            width: 90%;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .hero-img img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .meta {
+            font-size: 0.75rem;
+            color: hsla(0, 0%, 0%, 0.725)
+        }
+    </style>
+{% endblock %}
+{% comment %} {% image item.image original %} {% endcomment %}
+{% block content %}
+<div class="wrapper">
+        <h1>{{ page.title }}</h1>
+    
+        <div class="gallery">
+            {% for item in page.gallery_images.all %}
+                <div class="hero-img">
+                    {% image item.image original %}
+                </div>
+            {% endfor %}
+        </div>
+    
+        <p class="meta">Published {{ page.date }}</p>
+        {% with authors=page.authors.all %}
+            {% if authors %}
+                <div class="author-info">
+                    {% for author in authors %}
+                        <div class="author">{% image author.author_image fill-32x32 %}</div>
+                        <div><p>{{ author.name }}</p></div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    
+        <div class="intro"><p>{{ page.intro }}</p></div>
+    
+        {{ page.body|richtext }}
+    
+        <div class="">
+            <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+        </div>
+
+        {% with tags=page.tags.all %}
+            {% if tags %}
+                <div class="tags">
+                    <h3>Tags</h3>
+                    {% for tag in tags %}
+                        <a href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+    {% endblock %}
